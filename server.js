@@ -1,6 +1,9 @@
 const express = require('express');
 const path = require('path');
 const notesDB = require('./db/db.json');
+const fs = require("fs");
+const util = require("util");
+const uuid = require("./helpers/uuid");
 
 const PORT = process.env.port || 3001;
 
@@ -20,15 +23,20 @@ app.get('/notes', (req, res) =>
   res.sendFile(path.join(__dirname, '/public/notes.html'))
 );
 
-app.get('/notes', (req, res) =>
+app.get('/api/notes', (req, res) =>
   res.json(notesDB)
 );
 
-app.post('/notes', (req, res) => {
+app.post('/api/notes', (req, res) => {
   const { body } = req;
   notesDB.push(body);
   res.json(notesDB)
 });
+
+app.delete('/api/notes/', (req, res) => {
+    console.log("DELETE Request Called for /api endpoint")
+        res.send("DELETE Request Called")
+    }); 
 
 app.listen(PORT, () =>
   console.log(`App listening at http://localhost:${PORT} 🚀`)
