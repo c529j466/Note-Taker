@@ -51,14 +51,14 @@ const appendContent = (content, file) => {
 
 // Attaching readContent function to notes for persistance
 app.get("/api/notes", (req, res) => {
-    console.info(`${req.method} request received to get notes`)
+    console.log(`${req.method} request received to get notes`)
     readContent("./db/db.json").then((data) => res.status(200).json(JSON.parse(data)));
 });
 
 // Creates POST route for notes
 app.post("/api/notes", (req, res) => {
-    console.info(`${req.method} request received to add a note`);
-    console.info(req.rawHeaders);
+    console.log(`${req.method} request received to add a note`);
+   
 
 // Sets title and text to the body of the request
     const { title, text } = req.body;
@@ -70,7 +70,7 @@ app.post("/api/notes", (req, res) => {
             id: uuid(),
         };
 // Sets new note to the db.json file 
-        appendContent(newNote, "./db/db.json");
+        appendContent(newNote, path.join(__dirname, "db", "db.json"));
 
         const response = {
             status: "success",
@@ -87,7 +87,7 @@ app.post("/api/notes", (req, res) => {
 
 // Creates route to delete notes
 app.delete("/api/notes/:id", (req, res) => {
-    console.info(`${req.method} request received to remove a note`);
+    console.log(`${req.method} request received to remove a note`);
  
 // Reading through db.json then sets parsed data to a variable 
     fs.readFile("./db/db.json", "utf-8", (err, data) => {
